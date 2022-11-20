@@ -102,7 +102,7 @@ return crunker.concatAudio(buffers);
 })
 .then((merged) => {
 // => AudioBuffer
-return crunker.export(merged, 'audio/mp3');
+return crunker.export(merged, 'audio/wav');
 })
 .then((output) => {
 // => {blob, element, url}
