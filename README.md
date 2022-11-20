@@ -1,2 +1,0 @@
-# szys
-Begin app
