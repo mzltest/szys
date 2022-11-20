@@ -1,33 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset=utf-8>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hi from Begin!</title>
-  <link rel="stylesheet" href="https://static.begin.app/starter/default.css">
-  <link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" rel="icon" type="image/x-icon">
+  <title>Hello, world!</title>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="" />
 </head>
 <body>
-  <div class="center-text">
-    <img src="https://static.begin.app/starter/begin-logo.svg" style="max-width: 250px" class="center-text">
-    <div style="margin-bottom: 24px">
-      <h1 style="margin-bottom: 24px" class="center-text">
-        Howdy, Beginner!
-      </h1>
-      <p style="margin-bottom: 8px">
-        Get started by editing this file at:
-      </p>
-      <code>
-        public/index.html
-      </code>
-    </div>
-    <div>
-      <p style="margin-bottom: 8px">
-        View documentation at:
-      </p>
-      <a class="link" href="https://docs.begin.com" target="_blank">https://docs.begin.com</a>
-    </div>
-  </div>
-  <script type="module" src="index.js"></script>
+基于 https://github.com/DSP-8192/HuoZiYinShua 的音源，但只有其基本功能。
+出奇怪的问题了先刷新和清cookie。<hr>
+<div id="s1">
+<label for="folder">文件夹名（提交之后就不要动了）</label>
+<input id="folder" value="otto">
+<button id="s1_sub" onclick="loadinfo(document.getElementById('folder'). value)">继续</button>
+</div>
+<div id="s2" hidden="true">
+<label for="text">文本</label>
+<textarea id="text"></textarea>
+<label for="preferexp">优先匹配短语</label>
+<input type="checkbox" id="preferexp">
+<button id="s2_sub" onclick="getpinyins(document.getElementById('text').value,document.getElementById('preferexp').checked)">继续</button>
+</div>
+
+<div id="s3" hidden="true">
+<label for="pinyins">发音文件名列表</label>
+<textarea id="pinyins"></textarea>
+<button id="s3_sub" onclick="sound(document.getElementById('pinyins').value)">下载（不存在的音会自动跳过）</button>
+</div>
+<script src="pinyin-pro.js"></script>
+<script src="crunker.js"></script>
+<script>
+window.navigator.serviceWorker.register("./service-worker.js", {
+scope: "./"
+})
+</script>
+<script>
+var EngDict, ExpDict, fileArr
+var {
+pinyin,
+customPinyin
+} = pinyinPro;
+function loadinfo(folder) {
+console.log(folder)
+fetch('./voices/'+folder+'/dictionary.json').then(res=>res.json()).then(data=>EngDict = data)
+
+.then(()=> {
+fetch('./voices/'+folder+'/ysddTable.json').then(res=>res.json()).then(data=>ExpDict = data)
+
+}).then(
+document.getElementById('s2').removeAttribute('hidden'))
+
+}
+function getpinyins(text, preferexp) {
+text = text.toLowerCase()
+text = text.replace(/[^\u4e00-\u9fa5a-z0-9]/g, '')
+document.getElementById('text').value = text
+if (preferexp) {
+customPinyin(ExpDict);
+
+} else {
+customPinyin({});
+}
+
+fileArr = pinyin(text, {
+toneType: 'none', type: 'array', v: true
+})
+//replace nonchinese
+fileArr.forEach((elem, i)=> {
+if (elem in EngDict) {
+fileArr[i] = EngDict[elem]}
+
+})
+document.getElementById('s3').removeAttribute('hidden')
+document.getElementById('pinyins').value = fileArr.join(' ')
+}
+async function pathexist(url) {
+const response = await fetch(url,
+{
+method: "head",
+mode: "no-cors"
+});
+return response.status == 200;
+}
+async function sound(filenames) {
+files = filenames.split(' ')
+console.log(files)
+filens = new Array()
+for (el of files) {
+path = './voices/'+document.getElementById('folder').value+'/sources/'+el+'.wav'
+if (await pathexist(path)) {
+filens.push(path)}
+}
+
+console.log(filens)
+let crunker = new Crunker.default();
+
+crunker
+.fetchAudio(
+...
+filens)
+.then((buffers) => {
+// => [AudioBuffer, AudioBuffer]
+return crunker.concatAudio(buffers);
+})
+.then((merged) => {
+// => AudioBuffer
+return crunker.export(merged, 'audio/mp3');
+})
+.then((output) => {
+// => {blob, element, url}
+crunker.download(output.blob);
+document.body.append(output.element);
+console.log(output.url);
+})
+.catch((error) => {
+// => Error Message
+});
+
+
+
+}
+</script>
 </body>
 </html>
