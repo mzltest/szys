@@ -75,11 +75,7 @@ document.getElementById('s3').removeAttribute('hidden')
 document.getElementById('pinyins').value = fileArr.join(' ')
 }
 async function pathexist(url) {
-const response = await fetch(url,
-{
-method: "head",
-mode: "no-cors"
-});
+const response = await fetch(url);
 return response.status == 200;
 }
 async function sound(filenames) {
