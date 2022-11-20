@@ -8,7 +8,7 @@
 </head>
 <body>
 基于 https://github.com/DSP-8192/HuoZiYinShua 的音源，但只有其基本功能。
-出奇怪的问题了先刷新和清cookie。<hr>
+出奇怪的问题了先F12,有的刷新和清cookie即可，剩下的就是代码问题。另外直接访问会出问题，目前无后端的情况下去 https://static-f9uw2-staging.begin.app/dream-xqg/index.html 才能用。<hr>
 <div id="s1">
 <label for="folder">文件夹名（提交之后就不要动了）</label>
 <input id="folder" value="otto">
@@ -42,10 +42,10 @@ customPinyin
 } = pinyinPro;
 function loadinfo(folder) {
 console.log(folder)
-fetch('https://static-f9uw2-staging.begin.app/dream-xqg/voices/'+folder+'/dictionary.json').then(res=>res.json()).then(data=>EngDict = data)
+fetch('./voices/'+folder+'/dictionary.json').then(res=>res.json()).then(data=>EngDict = data)
 
 .then(()=> {
-fetch('https://static-f9uw2-staging.begin.app/dream-xqg/voices/'+folder+'/ysddTable.json').then(res=>res.json()).then(data=>ExpDict = data)
+fetch('./voices/'+folder+'/ysddTable.json').then(res=>res.json()).then(data=>ExpDict = data)
 
 }).then(
 document.getElementById('s2').removeAttribute('hidden'))
@@ -84,7 +84,7 @@ files = filenames.split(' ')
 console.log(files)
 filens = new Array()
 for (el of files) {
-path = 'https://static-f9uw2-staging.begin.app/dream-xqg/voices/'+document.getElementById('folder').value+'/sources/'+el+'.wav'
+path = './voices/'+document.getElementById('folder').value+'/sources/'+el+'.wav'
 if (await pathexist(path)) {
 filens.push(path)}
 }
