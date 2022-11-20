@@ -42,10 +42,10 @@ customPinyin
 } = pinyinPro;
 function loadinfo(folder) {
 console.log(folder)
-fetch('./voices/'+folder+'/dictionary.json').then(res=>res.json()).then(data=>EngDict = data)
+fetch('https://static-f9uw2-staging.begin.app/dream-xqg/voices/'+folder+'/dictionary.json').then(res=>res.json()).then(data=>EngDict = data)
 
 .then(()=> {
-fetch('./voices/'+folder+'/ysddTable.json').then(res=>res.json()).then(data=>ExpDict = data)
+fetch('https://static-f9uw2-staging.begin.app/dream-xqg/voices/'+folder+'/ysddTable.json').then(res=>res.json()).then(data=>ExpDict = data)
 
 }).then(
 document.getElementById('s2').removeAttribute('hidden'))
@@ -84,7 +84,7 @@ files = filenames.split(' ')
 console.log(files)
 filens = new Array()
 for (el of files) {
-path = './voices/'+document.getElementById('folder').value+'/sources/'+el+'.wav'
+path = 'https://static-f9uw2-staging.begin.app/dream-xqg/voices/'+document.getElementById('folder').value+'/sources/'+el+'.wav'
 if (await pathexist(path)) {
 filens.push(path)}
 }
