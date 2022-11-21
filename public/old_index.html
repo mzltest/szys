@@ -30,7 +30,7 @@
 <input type="checkbox" id="useeffects">
 <br>
 <label for="effects">改变列表</label>
-<details>长度必须与文件名列表长度相同。1=不改变，相当于变采样率好像是</details>
+<details>长度必须与文件名列表长度相同，+/-100=一个半音，+/-1200=一个音阶。一般简谱的1-7对应[0,200,400,500,700,900,1100]</details>
 <textarea id="effects"></textarea>
 <button id="s3_sub" onclick="sound(document.getElementById('pinyins').value,document.getElementById('useeffects').checked,document.getElementById('effects').value)">播放</button>
 </div>
