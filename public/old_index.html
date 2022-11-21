@@ -26,7 +26,7 @@
 <label for="pinyins">发音文件名列表</label>
 <textarea id="pinyins"></textarea>
 <br>
-<label for="useeffects">改变音调和速度（playbackRate）</label>
+<label for="useeffects">改变音调和速度（detune）</label>
 <input type="checkbox" id="useeffects">
 <br>
 <label for="effects">改变列表</label>
@@ -105,7 +105,7 @@ attack: 0
 sound.play();
 
 //console.log(charrates)
-sound.sourceNode.playbackRate.value = Number(charrates[0]);
+sound.sourceNode.detune.value = Number(charrates[0]);
 
 if (soundpaths.length === 1) {
 sound.on('end', () => {
@@ -128,7 +128,7 @@ files = filenames.split(' ')
 if (useeffects) {
 charrates = effects.split(' ')
 } else {
-charrates = new Array(files.length).fill(1)
+charrates = new Array(files.length).fill(0)
 
 }console.log(charrates)
 playSounds(files, charrates)
