@@ -25,11 +25,11 @@ function parse(text){
   lines.forEach((el,i)=>{
     if(el.startsWith('NOTE Confidence: ')){
       textdata=lines[i+1].split('\r\n')
-      if(textdata.length==3){
+      if(textdata.length==2){
         //id,tstart--->tend,text
 conf=lines[i].split(': ')[1]
-range=textdata[1]
-       data=textdata[2]
+range=textdata[0]
+       data=textdata[1]
       
        for (char of data){
          py=pinyin(char, {
