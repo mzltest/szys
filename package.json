@@ -7,5 +7,9 @@
   },
   "devDependencies": {
     "@architect/sandbox": "^5.0"
+  },
+  "dependencies": {
+    "@architect/functions": "^5.3.0",
+    "node-fetch": "^2.6.7"
   }
 }
