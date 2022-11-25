@@ -164,6 +164,7 @@ function httpHandler(req, pathname) {
 async function proxy(urlObj, reqInit, acehOld, rawLen, retryTimes) {
   //console.log('===>',reqInit)
   reqInit['agent']=agent
+  reqInit['headers']['host']=urlObj.host
   const res = await fetch(urlObj.href, reqInit)
   //const resHdrOld = res.headers
   const resHdrOld = [...res.headers.entries()].reduce((obj, [key, value]) => (obj[key.toLowerCase()] = value, obj), {})
