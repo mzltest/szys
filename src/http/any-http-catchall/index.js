@@ -127,12 +127,12 @@ function httpHandler(req, pathname) {
       if (v) {
         reqHdrNew[k]= v
       } else {
-        reqHdrNew.delete(k)
+        delete reqHdrNew[k]
       }
     }
   }
   if (!('referer' in param)) {
-    reqHdrNew.delete('referer')
+    delete reqHdrNew['referer']
   }
 
   // cfworker 会把路径中的 `//` 合并成 `/`
@@ -162,9 +162,11 @@ function httpHandler(req, pathname) {
  * @param {number} retryTimes 
  */
 async function proxy(urlObj, reqInit, acehOld, rawLen, retryTimes) {
+  //console.log('===>',reqInit)
+  reqInit['agent']=agent
   const res = await fetch(urlObj.href, reqInit)
   const resHdrOld = res.headers
-  const resHdrNew = new Headers(resHdrOld)
+  const resHdrNew = resHdrOld
 
   let expose = '*'
   
@@ -179,7 +181,7 @@ async function proxy(urlObj, reqInit, acehOld, rawLen, retryTimes) {
       if (acehOld) {
         expose = expose + ',' + x
       }
-      resHdrNew.delete(k)
+      delete resHdrNew[k]
     }
     else if (acehOld &&
       k !== 'cache-control' &&
@@ -228,9 +230,9 @@ async function proxy(urlObj, reqInit, acehOld, rawLen, retryTimes) {
   resHdrNew['--s']= status
   resHdrNew['--ver']= JS_VER
 
-  resHdrNew.delete('content-security-policy')
-  resHdrNew.delete('content-security-policy-report-only')
-  resHdrNew.delete('clear-site-data')
+  delete resHdrNew['content-security-policy']
+  delete resHdrNew['content-security-policy-report-only']
+  delete resHdrNew['clear-site-data']
 
   if (status === 301 ||
       status === 302 ||
@@ -240,11 +242,14 @@ async function proxy(urlObj, reqInit, acehOld, rawLen, retryTimes) {
   ) {
     status = status + 10
   }
-
-  return new Response(res.body, {
-    status,
+ body=await res.arrayBuffer().toString('base64')
+ console.log('b:',body)
+  return  {
+    body:body,
+    statusCode:status,
     headers: resHdrNew,
-  })
+    isBase64Encoded:True
+  }
 }
 
 
