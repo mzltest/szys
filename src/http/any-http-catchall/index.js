@@ -249,6 +249,7 @@ async function proxy(urlObj, reqInit, acehOld, rawLen, retryTimes) {
  let mybody=await res.buffer()
      mybody=mybody.toString('base64')
  console.log('b:',mybody.length)
+ delete resHdrNew['content-encoding']
   return  {
     body:mybody,
     statusCode:status,
