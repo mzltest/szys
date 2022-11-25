@@ -248,7 +248,7 @@ async function proxy(urlObj, reqInit, acehOld, rawLen, retryTimes) {
     body:body,
     statusCode:status,
     headers: resHdrNew,
-    isBase64Encoded:True
+   // isBase64Encoded:True
   }
 }
 
