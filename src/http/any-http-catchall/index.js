@@ -248,7 +248,7 @@ async function proxy(urlObj, reqInit, acehOld, rawLen, retryTimes) {
   }
  let mybody=await res.buffer()
      mybody=mybody.toString('base64')
- console.log('h:',resHdrNew)
+ console.log('b:',mybody.length)
   return  {
     body:mybody,
     statusCode:status,
