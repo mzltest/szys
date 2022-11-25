@@ -165,12 +165,15 @@ async function proxy(urlObj, reqInit, acehOld, rawLen, retryTimes) {
   //console.log('===>',reqInit)
   reqInit['agent']=agent
   const res = await fetch(urlObj.href, reqInit)
-  const resHdrOld = res.headers
+  //const resHdrOld = res.headers
+  const resHdrOld = [...res.headers.entries()].reduce((obj, [key, value]) => (obj[key.toLowerCase()] = value, obj), {})
+  console.log(resHdrOld)
   const resHdrNew = resHdrOld
 
   let expose = '*'
   
-  for (const [k, v] of resHdrOld.entries()) {
+  for (const k in resHdrOld) {
+    let v=resHdrOld[k]
     if (k === 'access-control-allow-origin' ||
         k === 'access-control-expose-headers' ||
         k === 'location' ||
@@ -242,10 +245,11 @@ async function proxy(urlObj, reqInit, acehOld, rawLen, retryTimes) {
   ) {
     status = status + 10
   }
- body=await res.arrayBuffer().toString('base64')
- console.log('b:',body)
+ let mybody=await res.buffer()
+     mybody=mybody.toString('base64')
+ console.log('h:',resHdrNew)
   return  {
-    body:body,
+    body:mybody,
     statusCode:status,
     headers: resHdrNew,
    // isBase64Encoded:True
