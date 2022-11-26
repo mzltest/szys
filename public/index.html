@@ -79,15 +79,16 @@ const response = await fetch(url);
 return response.status == 200;
 }
 async function sound(filenames) {
-//document.getElementById('s3_sub').setAttribute("hidden",true)
+document.getElementById('s3_sub').setAttribute("disabled",true)
 files = filenames.split(' ')
 console.log(files)
 filens = new Array()
 var a=0
 for (el of files) {
+a++
 path = './voices/'+document.getElementById('folder').value+'/sources/'+el+'.wav'
 document.getElementById('s3_sub').innerText='Downloading audio...'+a+'/'+files.length
-a++
+
 if (await pathexist(path)) {
 filens.push(path)
 }
@@ -113,6 +114,8 @@ return crunker.export(merged, 'audio/wav');
 crunker.download(output.blob);
 document.body.append(output.element);
 console.log(output.url);
+document.getElementById('s3_sub').removeAttribute("disabled")
+
 document.getElementById('s3_sub').innerText='下载（不存在的音会自动跳过）'
 })
 .catch((error) => {
