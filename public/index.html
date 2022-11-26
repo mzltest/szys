@@ -83,15 +83,19 @@ async function sound(filenames) {
 files = filenames.split(' ')
 console.log(files)
 filens = new Array()
+var a=0
 for (el of files) {
 path = './voices/'+document.getElementById('folder').value+'/sources/'+el+'.wav'
+document.getElementById('s3_sub').innerText='Downloading audio...'+a+'/'+files.length
+a++
 if (await pathexist(path)) {
-filens.push(path)}
+filens.push(path)
+}
 }
 
 console.log(filens)
 let crunker = new Crunker.default();
-
+document.getElementById('s3_sub').innerText='Processing audio...'
 crunker
 .fetchAudio(
 ...
@@ -109,6 +113,7 @@ return crunker.export(merged, 'audio/wav');
 crunker.download(output.blob);
 document.body.append(output.element);
 console.log(output.url);
+document.getElementById('s3_sub').innerText='下载（不存在的音会自动跳过）'
 })
 .catch((error) => {
 // => Error Message
