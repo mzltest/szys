@@ -117,9 +117,13 @@ attack: 0
 }
 },
 () => {
-textSelect($$('text'),xa,xa+1);
+xa=document.getElementById('pinyins').value.indexOf(' ',xa)
+xa1=xa
+xa=document.getElementById('pinyins').value.indexOf(' ',xa)
+xa2=xa
+textSelect($$('pinyins'),xa1,xa2);
 sound.play();
-xa++;
+
 
 //console.log(charrates)
 sound.sourceNode.detune.value = Number(charrates[0]);
