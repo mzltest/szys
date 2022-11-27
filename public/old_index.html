@@ -80,6 +80,22 @@ fileArr[i] = EngDict[elem]}
 document.getElementById('s3').removeAttribute('hidden')
 document.getElementById('pinyins').value = fileArr.join(' ')
 }
+function $$(id){
+	return document.getElementById(id);	
+}
+function textSelect(textBox,start,end){
+	if(textBox.setSelectionRange){
+		textBox.setSelectionRange(start,end);	
+	}else if(textBox.createTextRange){
+		var rang = textBox.createTextRange();
+		rang.collapse(true);
+		rang.moveStart('character',start);
+		rang.moveEnd('character',end-start);
+		rang.select();	
+	}
+	textBox.focus();
+}
+var xa=0
 function playSounds(soundpaths, charrates) {
 if (soundpaths.length > 0) {
 //check file exists
@@ -101,8 +117,9 @@ attack: 0
 }
 },
 () => {
-
+textSelect($$('text'),xa,xa+1);
 sound.play();
+xa++;
 
 //console.log(charrates)
 sound.sourceNode.detune.value = Number(charrates[0]);
@@ -124,6 +141,7 @@ this.playSounds(soundpaths, charrates);
 }
 
 function sound(filenames, useeffects, effects) {
+xa=0
 files = filenames.split(' ')
 if (useeffects) {
 charrates = effects.split(' ')
