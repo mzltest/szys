@@ -117,11 +117,10 @@ attack: 0
 }
 },
 () => {
-xa=document.getElementById('pinyins').value.indexOf(' ',xa)
 xa1=xa
-xa=document.getElementById('pinyins').value.indexOf(' ',xa)
-xa2=xa
-textSelect($$('pinyins'),xa1,xa2);
+xa=document.getElementById('pinyins').value.indexOf(' ',xa+1)
+
+textSelect($$('pinyins'),xa1,xa);
 sound.play();
 
 
