@@ -46,7 +46,7 @@ invid=setInterval(function(){
             progress=data.view/goal
             
             document.getElementById('prog').setAttribute('value',progress)
-            document.getElementById('info').innerText=('尚余观看:'+(goal-data.view)+' 当前观看:'+data.view+' +'+(data.view-oldview))
+            document.getElementById('info').innerText=('['+progress*100+'%]尚余观看:'+(goal-data.view)+' 当前观看:'+data.view+' +'+(data.view-oldview))
             oldview=data.view
             if(data.view>=goal){
                 alert('目标达成，停止数据更新。')
