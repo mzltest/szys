@@ -11,14 +11,7 @@ if(!('queryStringParameters' in request)|| request.queryStringParameters==null){
 if('api' in request.queryStringParameters){
     res=await fetch("https://api.bilibili.com/x/web-interface/archive/stat?bvid="+request.queryStringParameters.bvid,{agent:agent});
     
-    return {
-        statusCode: 200,
-        headers: {
-          'content-type': 'application/json; charset=utf8',
-          'cache-control': 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0'
-        },
-        body: res
-      }
+ return res
 }else if('goal' in request.queryStringParameters && 'bvid' in request.queryStringParameters ){
 data=`<!DOCTYPE html>
 <html lang="en">
@@ -44,7 +37,7 @@ invid=setInterval(function(){
     if(i%60==0){
         document.getElementById('nextupdate').innerText='正获取新数据';
         i=0
-        fetch('./get?api=1&bvid='+bvid).then(res=>res.json()).then((data)=>{
+        fetch('./bvstat?api=1&bvid='+bvid).then(res=>res.json()).then((data)=>{
             console.log(data)
             if(data.code!=0){console.error(data)}
             data=data.data
