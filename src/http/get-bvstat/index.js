@@ -10,8 +10,8 @@ exports.handler = async function http (request) {
 if(!('queryStringParameters' in request)|| request.queryStringParameters==null){return {body:'must have bvid+goal or api+bvid'}}
 if('api' in request.queryStringParameters){
     res=await fetch("https://api.bilibili.com/x/web-interface/archive/stat?bvid="+request.queryStringParameters.bvid,{agent:agent});
-    
- return res
+    jsonmy=await res.json()
+ return jsonmy
 }else if('goal' in request.queryStringParameters && 'bvid' in request.queryStringParameters ){
 data=`<!DOCTYPE html>
 <html lang="en">
