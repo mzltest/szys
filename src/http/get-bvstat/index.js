@@ -10,16 +10,14 @@ exports.handler = async function http (request) {
 if(!('queryStringParameters' in request)|| request.queryStringParameters==null){return {body:'must have bvid+goal or api+bvid'}}
 if('api' in request.queryStringParameters){
     res=await fetch("https://api.bilibili.com/x/web-interface/archive/stat?bvid="+request.queryStringParameters.bvid,{agent:agent});
-     console.log(res)
-    data =await res.json()
- 
+    
     return {
         statusCode: 200,
         headers: {
           'content-type': 'application/json; charset=utf8',
           'cache-control': 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0'
         },
-        body: data
+        body: res
       }
 }else if('goal' in request.queryStringParameters && 'bvid' in request.queryStringParameters ){
 data=`<!DOCTYPE html>
