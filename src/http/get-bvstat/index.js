@@ -37,7 +37,7 @@ document.getElementById('info').innerText='正在获取数据:'+bvid+',目标值
 invid=setInterval(function(){
 
     if(i%60==0){
-        document.getElementById('nextupdate').innerText='正获取新数据';
+        document.getElementById('nextupdate').innerText='开始获取新数据';
         i=0
         fetch('./bvstat?api=1&bvid='+bvid).then(res=>res.json()).then((data)=>{
             console.log(data)
