@@ -6,11 +6,12 @@ const agent = new https.Agent({
 })
 
 exports.handler = async function http (request) {
-    console.log(request)
+  
 if(!('queryStringParameters' in request)|| request.queryStringParameters==null){return {body:'must have bvid+goal or api+bvid'}}
 if('api' in request.queryStringParameters){
     res=await fetch("https://api.bilibili.com/x/web-interface/archive/stat?bvid="+request.queryStringParameters.bvid,{agent:agent});
     jsonmy=await res.json()
+  console.log(jsonmy)
  return jsonmy
 }else if('goal' in request.queryStringParameters && 'bvid' in request.queryStringParameters ){
 data=`<!DOCTYPE html>
@@ -28,7 +29,7 @@ data=`<!DOCTYPE html>
 <p id="nextupdate"></p>
 <script>
 bvid='{{BVID}}'
-goal='{{GOAL}}'
+goal=parseInt('{{GOAL}}')
 i=0
 oldview=0
 document.getElementById('info').innerText='正在获取数据:'+bvid+',目标值为'+goal;
