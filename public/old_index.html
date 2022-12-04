@@ -30,7 +30,7 @@
 <input type="checkbox" id="useeffects">
 <br>
 <label for="effects">改变列表</label>
-<details>长度必须与文件名列表长度相同，+/-100=一个半音，+/-1200=一个音阶。一般简谱的1-7对应[0,200,400,500,700,900,1100]</details>
+<details>长度必须与文件名列表长度相同，+/-100=一个半音，+/-1200=一个音阶。一般简谱的1-7对应[0,200,400,500,700,900,1100]。实验性：有个jianpu2tune(str)函数可以参考，使用例jianpu2tune('#345-5+2345b4')</details>
 <textarea id="effects"></textarea>
 <button id="s3_sub" onclick="sound(document.getElementById('pinyins').value,document.getElementById('useeffects').checked,document.getElementById('effects').value)">播放</button>
 </div>
@@ -47,6 +47,41 @@ var {
 pinyin,
 customPinyin
 } = pinyinPro;
+function jianpu2tune(mystring){
+    matchtable=new Object()
+    matchtable['1']=0//[0,200,400,500,700,900,1100]
+    matchtable['2']=200
+    matchtable['3']=400
+    matchtable['4']=500
+    matchtable['5']=700
+    matchtable['6']=900
+    matchtable['7']=1100
+    resarr=[]
+    for (i=0;i<mystring.length;i++){
+        el=mystring[i]
+      if(new RegExp('[#b+-]').test(el)){
+          switch (el){
+              case '#':
+                  resarr.push((matchtable[mystring[i+1]]+100))
+                  break
+                  case 'b':
+                    resarr.push((matchtable[mystring[i+1]]-100))
+                    break
+                    case '+':
+                    resarr.push((matchtable[mystring[i+1]]+1200))
+                    break
+                    case '-':
+                        resarr.push((matchtable[mystring[i+1]]-1200))
+                        break
+          }
+         // console.log(el)
+      }else{
+          resarr.push(matchtable[el])
+      }
+    }
+    console.log(resarr)
+    return resarr.join(' ')
+}
 function loadinfo(folder) {
 console.log(folder)
 fetch('./voices/'+folder+'/dictionary.json').then(res=>res.json()).then(data=>EngDict = data)
