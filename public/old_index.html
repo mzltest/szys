@@ -57,7 +57,7 @@ function jianpu2tune(mystring){
     matchtable['6']=900
     matchtable['7']=1100
     resarr=[]
-    for (i=0;i<mystring.length;i++){
+    for (i=0;i<mystring.length;){
         el=mystring[i]
       if(new RegExp('[#b+-]').test(el)){
           switch (el){
@@ -74,9 +74,12 @@ function jianpu2tune(mystring){
                         resarr.push((matchtable[mystring[i+1]]-1200))
                         break
           }
-         // console.log(el)
+          console.log(el,mystring[i+1])
+          i+=2
       }else{
+          console.log(el)
           resarr.push(matchtable[el])
+          i++
       }
     }
     console.log(resarr)
