@@ -7,4 +7,4 @@ get /bvstat
 
 @aws
 timeout 300
-reh
+region ap-northeast-1
