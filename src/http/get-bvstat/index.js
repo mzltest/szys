@@ -1,6 +1,6 @@
 let arc = require('@architect/functions')
 let fetch = require('node-fetch')
-let data = require('@begin/data')
+let begindata = require('@begin/data')
 const https = require("https");
 const agent = new https.Agent({
   rejectUnauthorized: false
@@ -14,7 +14,7 @@ if('api' in request.queryStringParameters){
     jsonmy=await res.json()
   console.log(jsonmy)
   if(jsonmy.code==0){
-   doc= await data.get({table:'vids',key:request.queryStringParameters.bvid })
+   doc= await begindataget({table:'vids',key:request.queryStringParameters.bvid })
     if (!doc){
       doc={'key':request.queryStringParameters.bvid,'data':[]}
     }
@@ -25,12 +25,12 @@ if('api' in request.queryStringParameters){
     doc.data.push({'data':jsonmy.data,'ts':Math.floor(Date.now()/1000)})
     console.log(doc)
 }
-await data.set({table:'vids',key:request.queryStringParameters.bvid,data:doc.data})
+await begindata.set({table:'vids',key:request.queryStringParameters.bvid,data:doc.data})
   }
   
  return jsonmy
 }else if('goal' in request.queryStringParameters && 'bvid' in request.queryStringParameters ){
-  doc= await data.get({table:'vids',key:request.queryStringParameters.bvid })
+  doc= await begindata.get({table:'vids',key:request.queryStringParameters.bvid })
 data=`<!DOCTYPE html>
 <html lang="en">
 <head>
