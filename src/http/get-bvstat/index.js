@@ -1,5 +1,6 @@
 let arc = require('@architect/functions')
 let fetch = require('node-fetch')
+let data = require('@begin/data')
 const https = require("https");
 const agent = new https.Agent({
   rejectUnauthorized: false
@@ -12,8 +13,24 @@ if('api' in request.queryStringParameters){
     res=await fetch("https://api.bilibili.com/x/web-interface/archive/stat?bvid="+request.queryStringParameters.bvid,{agent:agent});
     jsonmy=await res.json()
   console.log(jsonmy)
+  if(jsonmy.code==0){
+   doc= await data.get({table:'vids',key:request.queryStringParameters.bvid })
+    if (!doc){
+      doc={'key':request.queryStringParameters.bvid,'data':[]}
+    }
+    console.log(doc)
+    doc.data=doc.data.slice(-500)
+    if(doc.data.length==0 || Math.floor(Date.now()/1000)>=(doc.data[doc.data.length-1].ts)+30){
+      console.log('==push==')
+    doc.data.push({'data':jsonmy.data,'ts':Math.floor(Date.now()/1000)})
+    console.log(doc)
+}
+await data.set({table:'vids',key:request.queryStringParameters.bvid,data:doc.data})
+  }
+  
  return jsonmy
 }else if('goal' in request.queryStringParameters && 'bvid' in request.queryStringParameters ){
+  doc= await data.get({table:'vids',key:request.queryStringParameters.bvid })
 data=`<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,6 +44,7 @@ data=`<!DOCTYPE html>
 <progress style="width: 100%;" id="prog"></progress>
 <p id="info"></p>
 <p id="nextupdate"></p>
+<details><summary>历史数据</summary>{{DBFORE}}</details>
 <script>
 
 bvid='{{BVID}}'
@@ -65,6 +83,41 @@ invid=setInterval(function(){
 </body>
 </html>`
 newdata=data.replace('{{BVID}}',request.queryStringParameters.bvid).replace('{{GOAL}}',request.queryStringParameters.goal)
+if(doc && 'data' in doc && doc.data.length>0){
+  thead=`<table>
+  <thead>
+    <tr>
+      <th>ts</th>
+      <th>view</th>
+      <th>danmaku</th>
+      <th>reply</th>
+      <th>share</th>
+      <th>fav</th>
+      <th>coin</th>
+    </tr>
+  </thead>
+  <tbody>`
+  for (el of doc.data){
+    console.log('----',el)
+    thead+=`
+    <tr>
+    <td>${el.ts}</td>
+    <td>${el.data.view}</td>
+    <td>${el.data.danmaku}</td>
+    <td>${el.data.reply}</td>
+    <td>${el.data.share}</td>
+    <td>${el.data.favorite}</td>
+    <td>${el.data.coin}</td>
+  </tr>`
+  }
+  thead+=`</tbody>
+  </table>`
+  console.log(thead)
+newdata=newdata.replace('{{DBFORE}}',thead)
+}else{
+  newdata=newdata.replace('{{DBFORE}}','尚未有人请求过数据。如果有请求，此处将显示最近500条历史数据（两次间隔需大于30秒）')
+}
+
 return {
     statusCode: 200,
     headers: {
