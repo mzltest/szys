@@ -14,7 +14,7 @@ if('api' in request.queryStringParameters){
     jsonmy=await res.json()
   console.log(jsonmy)
   if(jsonmy.code==0){
-   doc= await begindataget({table:'vids',key:request.queryStringParameters.bvid })
+   doc= await begindata.get({table:'vids',key:request.queryStringParameters.bvid })
     if (!doc){
       doc={'key':request.queryStringParameters.bvid,'data':[]}
     }
