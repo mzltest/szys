@@ -50,7 +50,7 @@ function average(arr) {//封装求平均值函数
         var len = arr.length;
         var sum = 0;
         for(var i = 0;i<len;i++){
-            sum +=array[i];
+            sum +=arr[i];
         }
         return sum/len;
     }
