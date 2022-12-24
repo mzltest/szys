@@ -59,7 +59,7 @@ bvid='{{BVID}}'
 goal=parseInt('{{GOAL}}')
 i=0
 oldview=0
-lastaddarray=[0,0,0,0,0]
+lastaddarray=[0]
 eta=0
 document.getElementById('info').innerText='正在获取数据:'+bvid+',目标值为'+goal;
 invid=setInterval(function(){
@@ -77,7 +77,7 @@ invid=setInterval(function(){
             document.getElementById('prog').setAttribute('value',progress)
             document.getElementById('info').innerText=('['+progress*100+'%]尚余观看:'+(goal-data.view)+' 当前观看:'+data.view+' +'+(data.view-oldview))
             lastaddarray.push((data.view-oldview))
-            lastaddarray.splice(-5)
+            lastaddarray=lastaddarray.splice(-5)
             eta=(goal-data.view)/average(lastaddarray)
             console.log('5m change eta:',eta)
             oldview=data.view
