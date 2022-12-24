@@ -76,8 +76,10 @@ invid=setInterval(function(){
             
             document.getElementById('prog').setAttribute('value',progress)
             document.getElementById('info').innerText=('['+progress*100+'%]尚余观看:'+(goal-data.view)+' 当前观看:'+data.view+' +'+(data.view-oldview))
-            lastaddarray.push((data.view-oldview))
-            lastaddarray=lastaddarray.slice(-5)
+     if(oldview!=0){  
+     lastaddarray.push((data.view-oldview))
+}
+       //     lastaddarray=lastaddarray.slice(-5)
             eta=(goal-data.view)/average(lastaddarray)
             console.log('5m change eta:',eta)
             oldview=data.view
