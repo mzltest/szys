@@ -46,10 +46,14 @@ data=`<!DOCTYPE html>
 <p id="nextupdate"></p>
 <details><summary>历史数据</summary>{{DBFORE}}</details>
 <script>
-function average(nums) {
-    return nums.reduce((a, b) => a + b) / nums.length;
-}
-
+function average(array) {//封装求平均值函数
+        var len = arr.length;
+        var sum = 0;
+        for(var i = 0;i<len;i++){
+            sum +=array[i];
+        }
+        return sum/len;
+    }
 
 bvid='{{BVID}}'
 goal=parseInt('{{GOAL}}')
