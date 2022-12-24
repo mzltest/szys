@@ -89,6 +89,7 @@ if(doc && 'data' in doc && doc.data.length>0){
     <tr>
       <th>ts</th>
       <th>view</th>
+      <th>like</th>
       <th>danmaku</th>
       <th>reply</th>
       <th>share</th>
@@ -103,6 +104,7 @@ if(doc && 'data' in doc && doc.data.length>0){
     <tr>
     <td>${el.ts}</td>
     <td>${el.data.view}</td>
+    <td>${el.data.like}</td>
     <td>${el.data.danmaku}</td>
     <td>${el.data.reply}</td>
     <td>${el.data.share}</td>
