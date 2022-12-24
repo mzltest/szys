@@ -46,11 +46,17 @@ data=`<!DOCTYPE html>
 <p id="nextupdate"></p>
 <details><summary>历史数据</summary>{{DBFORE}}</details>
 <script>
+function average(nums) {
+    return nums.reduce((a, b) => a + b) / nums.length;
+}
+
 
 bvid='{{BVID}}'
 goal=parseInt('{{GOAL}}')
 i=0
 oldview=0
+lastaddarray=new Array(5).fill(0)
+eta=0
 document.getElementById('info').innerText='正在获取数据:'+bvid+',目标值为'+goal;
 invid=setInterval(function(){
 
@@ -66,6 +72,10 @@ invid=setInterval(function(){
             
             document.getElementById('prog').setAttribute('value',progress)
             document.getElementById('info').innerText=('['+progress*100+'%]尚余观看:'+(goal-data.view)+' 当前观看:'+data.view+' +'+(data.view-oldview))
+            lastaddarray.push((data.view-oldview))
+            lastaddarray.splice(-5)
+            eta=(goal-data.view)/average(lastaddarray)
+            console.log('5m change eta:',eta)
             oldview=data.view
             if(data.view>=goal){
                 alert('目标达成，停止数据更新。')
@@ -76,7 +86,7 @@ invid=setInterval(function(){
         document.getElementById('nextupdate').innerText=(60-i%60)+'秒后重新获取(太频繁也没用)';
     }
     i++
-    console.log(i)
+   // console.log(i)
  
 }, 1000);
 </script>
