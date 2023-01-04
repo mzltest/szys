@@ -45,6 +45,7 @@ data=`<!DOCTYPE html>
 <p id="info"></p>
 <p id="nextupdate"></p>
 <details><summary>历史数据</summary>{{DBFORE}}</details>
+*请保持浏览器在线以定期获取数据，此服务仅为cors proxy，并不主动获取数据。
 <script>
 function average(arr) {//封装求平均值函数
         var len = arr.length;
