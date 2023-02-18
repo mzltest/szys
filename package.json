@@ -1,0 +1,16 @@
+{
+  "name": "begin-app",
+  "version": "0.0.0",
+  "description": "A simple Begin app with the minimum necessary file structure",
+  "scripts": {
+    "start": "npx sandbox"
+  },
+  "devDependencies": {
+    "@architect/sandbox": "^5.0"
+  },
+  "dependencies": {
+    "@architect/functions": "^5.3.0",
+    "@begin/data": "^4.0.2",
+    "node-fetch": "^2.6.7"
+  }
+}

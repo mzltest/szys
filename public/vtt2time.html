@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Hello, world!</title>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="" />
+</head>
+<body>
+    上传文件 ： <input type="file" name = "file" id = "fileId" /> 
+    
+    <button type = "submit" name = "btn" value = "提交" id = "btnId" onclick="check()" > 提交</button>
+
+
+<script src="pinyin-pro.js"></script>
+<script>
+var fres=new Object()
+var {
+pinyin,
+customPinyin
+} = pinyinPro;
+function parse(text){
+  lines=text.split('\r\n\r\n')
+  console.log(lines)
+  lines.forEach((el,i)=>{
+    if(el.startsWith('NOTE Confidence: ')){
+      textdata=lines[i+1].split('\r\n')
+      if(textdata.length==2){
+        //id,tstart--->tend,text
+conf=lines[i].split(': ')[1]
+range=textdata[0]
+       data=textdata[1]
+      
+       for (char of data){
+         py=pinyin(char, {
+toneType: 'none', nonZh: 'removed', v: true
+})
+console.log(py,[conf,range])
+if(py in fres){
+  if(fres[py][0]<conf){
+    fres[py]=[conf,range]
+  }
+}else{  fres[py]=[conf,range]
+  }
+       }
+      }
+    }
+  })
+  restxt='py,conf,range<br>'
+  for (a in fres){
+    restxt+=a+','+fres[a][0]+','+fres[a][1]+'<br>'
+  }
+  document.write(restxt)
+}
+  
+  
+</script>
+<script>
+
+    function check() {
+        
+        var objFile = document.getElementById("fileId");
+        
+    
+        console.log(objFile.files[0].size); // 文件字节数
+        
+            var reader = new FileReader();//新建一个FileReader
+            reader.readAsText(objFile.files[0], "UTF-8");//读取文件 
+            reader.onload = function(evt){ //读取完文件之后会回来这里
+          //  console.log(evt.target.result)
+                parse(evt.target.result); // 读取文件内容
+        }
+    }
+    </script>
+
+</body>
+</html>

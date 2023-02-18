@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Hello, world!</title>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="" />
+</head>
+<body>
+基于 https://github.com/DSP-8192/HuoZiYinShua 的音源，但只有其基本功能。
+
+<div id="s1">
+<label for="folder">文件夹名</label>
+<input id="folder" value="otto">
+<button id="s1_sub" onclick="loadinfo(document.getElementById('folder'). value)">继续</button>
+</div>
+<div id="s2" hidden="true">
+<label for="text">文本</label>
+<textarea id="text"></textarea>
+<label for="preferexp">优先匹配短语</label>
+<input type="checkbox" id="preferexp">
+<button id="s2_sub" onclick="getpinyins(document.getElementById('text').value,document.getElementById('preferexp').checked)">继续</button>
+</div>
+
+<div id="s3" hidden="true">
+<label for="pinyins">发音文件名列表</label>
+<textarea id="pinyins"></textarea>
+<br>
+<label for="useeffects">改变音调和速度（detune）</label>
+<input type="checkbox" id="useeffects">
+<br>
+<label for="effects">改变列表</label>
+<details>长度必须与文件名列表长度相同，+/-100=一个半音，+/-1200=一个音阶。一般简谱的1-7对应[0,200,400,500,700,900,1100]。实验性：有个jianpu2tune(str)函数可以参考，使用例jianpu2tune('#345-5+2345b4')</details>
+<textarea id="effects"></textarea>
+<button id="s3_sub" onclick="sound(document.getElementById('pinyins').value,document.getElementById('useeffects').checked,document.getElementById('effects').value)">播放</button>
+</div>
+<script src="pinyin-pro.js"></script>
+<script src="Pizzicato.min.js"></script>
+<script>
+window.navigator.serviceWorker.register("./service-worker.js", {
+scope: "./voices/"
+})
+</script>
+<script>
+var EngDict, ExpDict, fileArr
+var {
+pinyin,
+customPinyin
+} = pinyinPro;
+function jianpu2tune(mystring){
+    matchtable=new Object()
+    matchtable['1']=0//[0,200,400,500,700,900,1100]
+    matchtable['2']=200
+    matchtable['3']=400
+    matchtable['4']=500
+    matchtable['5']=700
+    matchtable['6']=900
+    matchtable['7']=1100
+    resarr=[]
+    for (i=0;i<mystring.length;){
+        el=mystring[i]
+      if(new RegExp('[#b+-]').test(el)){
+          switch (el){
+              case '#':
+                  resarr.push((matchtable[mystring[i+1]]+100))
+                  break
+                  case 'b':
+                    resarr.push((matchtable[mystring[i+1]]-100))
+                    break
+                    case '+':
+                    resarr.push((matchtable[mystring[i+1]]+1200))
+                    break
+                    case '-':
+                        resarr.push((matchtable[mystring[i+1]]-1200))
+                        break
+          }
+          console.log(el,mystring[i+1])
+          i+=2
+      }else{
+          console.log(el)
+          resarr.push(matchtable[el])
+          i++
+      }
+    }
+    console.log(resarr)
+    return resarr.join(' ')
+}
+function loadinfo(folder) {
+console.log(folder)
+fetch('./voices/'+folder+'/dictionary.json').then(res=>res.json()).then(data=>EngDict = data)
+
+.then(()=> {
+fetch('./voices/'+folder+'/ysddTable.json').then(res=>res.json()).then(data=>ExpDict = data)
+
+}).then(
+document.getElementById('s2').removeAttribute('hidden'))
+
+}
+function getpinyins(text, preferexp) {
+text = text.replace(/[^\u4e00-\u9fa5a-z0-9]/g, '')
+document.getElementById('text').value = text
+if (preferexp) {
+customPinyin(ExpDict);
+
+} else {
+customPinyin({});
+}
+
+fileArr = pinyin(text, {
+toneType: 'none', type: 'array', v: true
+})
+//replace nonchinese
+fileArr.forEach((elem, i)=> {
+if (elem in EngDict) {
+fileArr[i] = EngDict[elem]}
+
+})
+document.getElementById('s3').removeAttribute('hidden')
+document.getElementById('pinyins').value = fileArr.join(' ')
+}
+function $$(id){
+	return document.getElementById(id);	
+}
+function textSelect(textBox,start,end){
+	if(textBox.setSelectionRange){
+		textBox.setSelectionRange(start,end);	
+	}else if(textBox.createTextRange){
+		var rang = textBox.createTextRange();
+		rang.collapse(true);
+		rang.moveStart('character',start);
+		rang.moveEnd('character',end-start);
+		rang.select();	
+	}
+	textBox.focus();
+}
+var xa=0
+function playSounds(soundpaths, charrates) {
+if (soundpaths.length > 0) {
+//check file exists
+isexist = fetch('./voices/'+document.getElementById('folder').value+'/sources/'+soundpaths[0]+'.wav').then(resp=> {
+if (!resp.ok) {
+console.log(soundpaths[0], 'fetch err')
+soundpaths.shift()
+charrates.shift()
+if (soundpaths.length > 0) {
+this.playSounds(soundpaths, charrates)
+}
+}
+})
+const sound = new Pizzicato.Sound({
+source: 'file',
+options: {
+path: './voices/'+document.getElementById('folder').value+'/sources/'+soundpaths[0]+'.wav',
+attack: 0
+}
+},
+() => {
+xa1=xa
+xa=document.getElementById('pinyins').value.indexOf(' ',xa+1)
+
+textSelect($$('pinyins'),xa1,xa);
+sound.play();
+
+
+//console.log(charrates)
+sound.sourceNode.detune.value = Number(charrates[0]);
+
+if (soundpaths.length === 1) {
+sound.on('end', () => {
+console.log("Sequnce of sounds finished!");
+});
+} else {
+sound.on('end', () => {
+
+soundpaths.shift();
+charrates.shift()
+this.playSounds(soundpaths, charrates);
+});
+}
+});
+}
+}
+
+function sound(filenames, useeffects, effects) {
+xa=0
+files = filenames.split(' ')
+if (useeffects) {
+charrates = effects.split(' ')
+} else {
+charrates = new Array(files.length).fill(0)
+
+}console.log(charrates)
+playSounds(files, charrates)
+}
+</script>
+</body>
+</html>

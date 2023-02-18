@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Hello, world!</title>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="" />
+</head>
+<body>
+    上传文件 ： <input type="file" name = "file" id = "fileId" /> 
+    
+    <button type = "submit" name = "btn" value = "提交" id = "btnId" onclick="check()" > 提交</button>
+
+
+<script src="pinyin-pro.js"></script>
+<script>
+var dl = function (content, filename) {
+    // 创建隐藏的可下载链接
+    var eleLink = document.createElement('a');
+    eleLink.download = filename;
+    eleLink.style.display = 'none';
+    // 字符内容转变成blob地址
+    var blob = new Blob([content]);
+    eleLink.href = URL.createObjectURL(blob);
+    // 触发点击
+    document.body.appendChild(eleLink);
+    eleLink.click();
+    // 然后移除
+    document.body.removeChild(eleLink);
+};
+var fres=new Object()
+var res=new Array()
+var {
+pinyin,
+customPinyin
+} = pinyinPro;
+function parse(text){
+  lines=text.split('\r\n')
+  console.log(lines)
+for (i=0;i<lines.length;i++){
+if(i>10&&i%5==1){
+text=lines[i]
+text = text.replace(/[^\u4e00-\u9fa5]/g, '')
+fileArr = pinyin(text, {
+toneType: 'none', type: 'string', v: true
+})
+
+  res[i]=fileArr
+}
+else{
+res[i]=lines[i]
+}
+}
+res=res.join('\r\n')
+dl(res, '1.vtt')
+}
+  
+  
+</script>
+<script>
+
+    function check() {
+        
+        var objFile = document.getElementById("fileId");
+        
+    
+        console.log(objFile.files[0].size); // 文件字节数
+        
+            var reader = new FileReader();//新建一个FileReader
+            reader.readAsText(objFile.files[0], "UTF-8");//读取文件 
+            reader.onload = function(evt){ //读取完文件之后会回来这里
+          //  console.log(evt.target.result)
+                parse(evt.target.result); // 读取文件内容
+        }
+    }
+    </script>
+
+</body>
+</html>
