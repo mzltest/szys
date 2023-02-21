@@ -32,7 +32,7 @@ line.push('\u200B')
 line=line.reverse().join('')
 
 result+='\u202E'+line
-if((part+1)<parts.length){result+='\n'}
+if((part+1)<parts.length){result+='\n'}else{result+='\u202D'}
 line=[]
 }
 document.getElementById('msg').value=result
