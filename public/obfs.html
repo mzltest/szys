@@ -32,12 +32,16 @@ subl=[]
 while(line.length>=1)
 {
 subl.push(line.splice(0,Math.round(Math.random()*(line.length-1))+1))
-console.log(subl)
+//console.log(subl)
 }
 subl=subl.reverse()
 for (a of subl){
+if(Math.random()<0.5){
+
    result+='\u202E'+a.reverse().join('')+'\u202C'
-    
+  } else{
+result+=a.join('')
+} 
 }
 
 
