@@ -26,10 +26,10 @@ line.push(i)
 }
 else{
 line.push(i)
-line.push('\u8203')
+line.push('\u200B')
 }
 }
-line=line.reverse()
+line=line.reverse().join()
 result+='\u202E'+line
 }
 alert(result)
