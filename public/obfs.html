@@ -23,8 +23,8 @@ if(Math.random()<0.25){
 line.push(i)
 }
 else{
-line.push(i)
 line.push('\u200B')
+line.push(i)
 }
 }
 
@@ -40,7 +40,7 @@ if(Math.random()<0.75){
 
    result+='\u202E'+a.reverse().join('')+'\u202C'
   } else{
-result+=a.join('')
+result+='\u202C'+a.join('')
 } 
 }
 
