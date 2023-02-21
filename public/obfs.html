@@ -11,15 +11,13 @@
   <h1>Hello, world!</h1>
  
     <label for="message" id="len">Message:</label><br>
-    <textarea name="message" id="msg"></textarea><br>
+    <input name="message" id="msg"><br>
     <input type="submit" value="Submit" onclick="obfs(document.getElementById('msg').value)">
   
 <script>
-function obfs(text){
+function obfs(part){
 result=''
 line=[]
-parts=text.split('\n')
-for (part in parts){
 for(i of parts[part]){
 if(Math.random()<0.5){
 line.push(i)
@@ -43,9 +41,6 @@ for (a of subl){
 }
 
 
-if((part+1)<parts.length){result+='\n'}
-line=[]
-}
 document.getElementById('msg').value=result
 document.getElementById('len').innerText=result.length
 console.log(result.split(''))
