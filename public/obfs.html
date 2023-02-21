@@ -30,9 +30,9 @@ line.push('\u200B')
 }
 }
 
-while(line.length>0)
+while(line.length>1)
 {
-subl=line.splice(Math.round(Math.random()*(line.length-1))+1)
+subl=line.splice(0,Math.round(Math.random()*(line.length-1))+1)
 console.log(subl)
 }
 
