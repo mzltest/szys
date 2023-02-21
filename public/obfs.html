@@ -29,10 +29,10 @@ line.push(i)
 line.push('\u200B')
 }
 }
-line=line.reverse().join()
+line=line.reverse().join('')
 result+='\u202E'+line
 }
-alert(result)
+document.getElementById('msg').value=result
 }
 </script>
 </body>
