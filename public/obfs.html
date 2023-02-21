@@ -10,7 +10,7 @@
 <body>
   <h1>Hello, world!</h1>
  
-    <label for="message">Message:</label><br>
+    <label for="message" id="len">Message:</label><br>
     <textarea name="message" id="msg"></textarea><br>
     <input type="submit" value="Submit" onclick="obfs(document.getElementById('msg').value)">
   
@@ -36,6 +36,7 @@ if((part+1)<parts.length){result+='\n'}else{result='\u202D'+result}
 line=[]
 }
 document.getElementById('msg').value=result
+document.getElementById('len').innerText=result.length
 console.log(result.split(''))
 
 }
