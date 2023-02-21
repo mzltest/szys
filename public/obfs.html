@@ -19,8 +19,8 @@ function obfs(text){
 result=''
 line=[]
 parts=text.split('\n')
-for (part of parts){
-for(i of part){
+for (part in parts){
+for(i of parts[part]){
 if(Math.random()<0.5){
 line.push(i)
 }
@@ -32,6 +32,7 @@ line.push('\u200B')
 line=line.reverse().join('')
 
 result+='\u202E'+line
+if((part+1)<parts.length){result+='\n'}
 line=[]
 }
 document.getElementById('msg').value=result
