@@ -34,14 +34,9 @@ while(line.length>=1)
 subl.push(line.splice(0,Math.round(Math.random()*(line.length-1)/5)+2))
 //console.log(subl)
 }
-//subl=subl.reverse()
+subl=subl.reverse()
 for (a of subl){
-if(Math.random()<0.75){
-
    result+='\u202E'+a.reverse().join('')+'\u202C'
-  } else{
-result+='\u202C'+a.join('')
-} 
 }
 
 
