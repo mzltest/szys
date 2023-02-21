@@ -29,13 +29,18 @@ line.push(i)
 line.push('\u200B')
 }
 }
-line=line.reverse().join('')
 
-result+='\u202E'+line
+while(line.length>0)
+{
+subl=line.splice(Math.round(Math.random()*(line.length-1))+1)
+console.log(subl)
+}
+
+
+
 if((part+1)<parts.length){result+='\n'}
 line=[]
 }
-result+='\u202C'
 document.getElementById('msg').value=result
 document.getElementById('len').innerText=result.length
 console.log(result.split(''))
