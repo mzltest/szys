@@ -19,7 +19,7 @@ function obfs(part){
 result=''
 line=[]
 for(i of part){
-if(Math.random()<0.5){
+if(Math.random()<0.25){
 line.push(i)
 }
 else{
@@ -36,7 +36,7 @@ subl.push(line.splice(0,Math.round(Math.random()*(line.length-1)/5)+2))
 }
 //subl=subl.reverse()
 for (a of subl){
-if(Math.random()<0.5){
+if(Math.random()<0.75){
 
    result+='\u202E'+a.reverse().join('')+'\u202C'
   } else{
