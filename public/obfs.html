@@ -21,15 +21,6 @@ function obfs(part){
 text=part
 result=''
 line=[]
-for(i of part){
-if(Math.random()<0.25){
-line.push(i)
-}
-else{
-line.push('\u200B')
-line.push(i)
-}
-}
 
 subl=[]
 while(line.length>=1)
@@ -40,9 +31,9 @@ subl.push(line.splice(0,Math.round(Math.random()*(line.length-1)/5)+2))
 //subl=subl.reverse()
 for (a of subl){
 if(Math.random()<0.5){
-result+='{'+a.join('')+'}'
+result+=a.join('')
 }else{
-   result+='>'+a.reverse().join('')+'<'
+   result+='\u202E'+a.reverse().join('')+'\u202C'
 }
 }
 
