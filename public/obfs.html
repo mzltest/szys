@@ -30,12 +30,17 @@ line.push('\u200B')
 }
 }
 
-while(line.length>1)
+subl=[]
+while(line.length>=1)
 {
-subl=line.splice(0,Math.round(Math.random()*(line.length-1))+1)
+subl.push(line.splice(0,Math.round(Math.random()*(line.length-1))+1))
 console.log(subl)
 }
-
+subl=subl.reverse()
+for (a of subl){
+   result+='\u202E'+a.reverse().join('')+'\u202C'
+    
+}
 
 
 if((part+1)<parts.length){result+='\n'}
