@@ -44,3 +44,74 @@
   }
 
 </script>
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>打开频道页面</title>
+
+</head>
+
+<body>
+
+  <div style="display:flex;align-items:center;justify-content:center;height:100vh">
+
+    <form>
+
+      <label for="guildId">频道ID：</label>
+
+      <input type="text" id="guildId" name="guildId" style="margin-right:10px">
+
+      <button type="button" onclick="openGuildPage()">确认</button>
+
+    </form>
+
+  </div>
+
+  <script src="https://pub.idqqimg.com/qqmobile/qqapi.js?_bid=152"></script>
+
+  <script>
+
+    window.onload = function() {
+
+      const urlParams = new URLSearchParams(window.location.search);
+
+      const guildId = urlParams.get('guildId');
+
+      if(guildId) {
+
+        document.getElementById('guildId').value = guildId;
+
+        openGuildPage();
+
+      }
+
+    }
+
+    function openGuildPage() {
+
+      const guildId = document.getElementById('guildId').value;
+
+      if(guildId) {
+
+        mqq.invoke("guild","openGuildPageWithSig",{guildId});
+
+      } else {
+
+        alert('请输入频道ID！');
+
+      }
+
+    }
+
+  </script>
+
+</body>
+
+</html>
