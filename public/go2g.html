@@ -1,49 +1,3 @@
-
-<form>
-
-  <label for="guildId">频道ID：</label>
-
-  <input type="text" id="guildId" name="guildId">
-
-  <button type="button" onclick="openGuildPage()">确认</button>
-
-</form>
-
-<script>
-
-  window.onload = function() {
-
-    const urlParams = new URLSearchParams(window.location.search);
-
-    const guildId = urlParams.get('guildId');
-
-    if(guildId) {
-
-      document.getElementById('guildId').value = guildId;
-
-      openGuildPage();
-
-    }
-
-  }
-
-  function openGuildPage() {
-
-    const guildId = document.getElementById('guildId').value;
-
-    if(guildId) {
-
-      mqq.invoke("guild","openGuildPageWithSig",{guildId});
-
-    } else {
-
-      alert('请输入频道ID！');
-
-    }
-
-  }
-
-</script>
 <!DOCTYPE html>
 
 <html>
@@ -74,8 +28,7 @@
 
   </div>
 
-  <script src="https://pub.idqqimg.com/qqmobile/qqapi.js?_bid=152"></script>
-
+  
   <script>
 
     window.onload = function() {
@@ -100,7 +53,7 @@
 
       if(guildId) {
 
-        mqq.invoke("guild","openGuildPageWithSig",{guildId});
+        window.mqq.invoke("guild","openGuildPageWithSig",{guildId});
 
       } else {
 
